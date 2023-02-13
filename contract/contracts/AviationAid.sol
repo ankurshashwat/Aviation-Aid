@@ -2,7 +2,6 @@
 pragma solidity ^0.8.9;
 
 contract AviationAid {
-    
     // A struct to store maintenance information
 
     struct MaintenanceRecord {
@@ -55,7 +54,6 @@ contract AviationAid {
         uint256 _nextMaintenance,
         string memory _longevityOfAircraft
     ) public {
-        
         // Check if the component number is approved
 
         if (!isApprovedComponent(_componentNumber)) {
@@ -99,7 +97,6 @@ contract AviationAid {
     // Function to approve a component number
 
     function approveComponent(uint256 _componentNumber) public {
-        
         // Check if the component number is already approved
 
         if (isApprovedComponent(_componentNumber)) {
@@ -116,7 +113,6 @@ contract AviationAid {
     function isApprovedComponent(
         uint256 _componentNumber
     ) private view returns (bool) {
-        
         // Loop through the approvedComponents array to find the component number
 
         for (uint256 i = 0; i < approvedComponents.length; i++) {
@@ -130,37 +126,35 @@ contract AviationAid {
 
     // Function to fetch maintenance record corresponding to the aircraftSerialNumber
 
-    function getMaintenanceRecord (address technician) public view returns (
-        string memory,
-        uint256,
-        address,
-        uint256,
-        uint256,
-        string memory,
-        string memory,
-        uint256,
-        bool,
-        uint256,
-        string memory
-    ) {
-        
-        // Retrieve the maintenance record from the mapping
-        MaintenanceRecord storage aircraft = maintenanceRecords[msg.sender];
-
-        // Return the maintenance record's data
-
-        return (
-        aircraft.aircraftSerialNumber,
-        aircraft.ageOfAircraft,
-        aircraft.technician,
-        aircraft.dateOfInspection,
-        aircraft.lastAircraftService,
-        aircraft.accidentalRecords,
-        aircraft.componentsChanged,
-        aircraft.componentNumber,
-        aircraft.isApproved,
-        aircraft.nextMaintenance,
-        aircraft.longevityOfAircraft
-        ); 
+    function getMaintenanceRecord(
+        address _technician,
+        uint256 _index
+    )
+        public
+        view
+        returns (
+            string memory aircraftSerialNumber,
+            uint256 ageOfAircraft,
+            uint256 dateOfInspection,
+            uint256 lastAircraftService,
+            string memory accidentalRecords,
+            string memory componentsChanged,
+            uint256 componentNumber,
+            uint256 nextMaintenance,
+            string memory longevityOfAircraft
+        )
+    {
+        MaintenanceRecord storage maintenanceRecord = maintenanceRecords[
+            _technician
+        ][_index];
+        aircraftSerialNumber = maintenanceRecord.aircraftSerialNumber;
+        ageOfAircraft = maintenanceRecord.ageOfAircraft;
+        dateOfInspection = maintenanceRecord.dateOfInspection;
+        lastAircraftService = maintenanceRecord.lastAircraftService;
+        accidentalRecords = maintenanceRecord.accidentalRecords;
+        componentsChanged = maintenanceRecord.componentsChanged;
+        componentNumber = maintenanceRecord.componentNumber;
+        nextMaintenance = maintenanceRecord.nextMaintenance;
+        longevityOfAircraft = maintenanceRecord.longevityOfAircraft;
     }
 }
